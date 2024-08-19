@@ -1,0 +1,25 @@
+package org.example;
+
+public class Board {
+    private int number;
+    private String title;
+    private String content;
+
+    Board (int number, String title, String content) {
+        this.number = number;
+        this.title = title;
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+}

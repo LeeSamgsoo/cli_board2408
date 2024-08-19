@@ -1,20 +1,19 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class App {
     Scanner sc;
-    static int boardCount = 0;
-    ArrayList<String> titles = new ArrayList<>();
-    ArrayList<String> contents = new ArrayList<>();
-    App (Scanner sc) {
-        this.sc =sc;
+    static int boardCount = 1;
+    ArrayList<Board> ba = new ArrayList<>();
+
+    App(Scanner sc) {
+        this.sc = sc;
     }
 
-    void run () {
+
+    void run() {
         System.out.println("== 게시판 앱 ==");
         while (true) {
             try {
@@ -27,16 +26,17 @@ public class App {
                     String title = sc.nextLine();
                     System.out.print("내용 : ");
                     String content = sc.nextLine();
-                    boardCount++;
-                    titles.add(title);
-                    contents.add(content);
+
+                    Board b = new Board(boardCount, title, content);
+                    ba.add(b);
                     System.out.println(boardCount + "번 게시글이 등록되었습니다.");
+                    boardCount++;
                 } else if (a.equals("목록")) {
                     System.out.println("번호 / 제목 / 내용");
                     System.out.println("---------------------------");
                     int countIns = 0;
-                    while (countIns < boardCount) {
-                        System.out.println((countIns + 1) + " / " + titles.get(countIns) + " / " + contents.get(countIns));
+                    while (countIns < boardCount - 1) {
+                        System.out.println(ba.get(countIns).getNumber() + " / " + ba.get(countIns).getTitle() + " / " + ba.get(countIns).getContent());
                         countIns++;
                     }
 
