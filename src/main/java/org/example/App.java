@@ -22,8 +22,7 @@ public class App {
 
                 if (a.equals("종료")) {
                     break;
-                }
-                else if (a.equals("등록")) {
+                } else if (a.equals("등록")) {
                     System.out.print("제목 : ");
                     String title = sc.nextLine();
                     System.out.print("내용 : ");
@@ -33,8 +32,7 @@ public class App {
                     Board b = new Board(boardCount, title, content);
                     ba.add(b);
                     System.out.println(boardCount + "번 게시글이 등록되었습니다.");
-                }
-                else if (a.equals("목록")) {
+                } else if (a.equals("목록")) {
                     if (boardCount == 0) {
                         System.out.println("게시물이 존재하지 않습니다.");
                     } else {
@@ -46,8 +44,7 @@ public class App {
                             countIns++;
                         }
                     }
-                }
-                else if (a.equals("삭제")) {
+                } else if (a.equals("삭제")) {
                     if (boardCount == 0) {
                         System.out.println("게시물이 존재하지 않습니다.");
                     } else {
@@ -64,6 +61,26 @@ public class App {
                             }
                         }
                         sc.nextLine();
+                    }
+                } else if (a.equals("수정")) {
+                    if (boardCount == 0) {
+                        System.out.println("게시물이 존재하지 않습니다.");
+                    } else {
+                        System.out.print("수정할 게시물 번호를 입력하십시오 : ");
+                        int modIndex = sc.nextInt();
+                        sc.nextLine();
+                        for (int i = 0; i < ba.size(); i++) {
+                            if (ba.get(i).getNumber() == modIndex) {
+                                System.out.print("제목 : ");
+                                ba.get(i).setTitle(sc.nextLine());
+                                System.out.print("내용 : ");
+                                ba.get(i).setContent(sc.nextLine());
+                                System.out.println(modIndex + "번 게시물이 수정되었습니다.");
+                                break;
+                            } else if (ba.size() - 1 == i) {
+                                System.out.println("존재하지 않는 게시물 입니다.");
+                            }
+                        }
                     }
                 }
             } catch (Exception e) {
