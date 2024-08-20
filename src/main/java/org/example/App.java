@@ -12,7 +12,7 @@ public class App {
         this.sc = sc;
     }
 
-    void boardInsert () {
+    void boardInsert() {
         System.out.print("제목 : ");
         String title = sc.nextLine();
         System.out.print("내용 : ");
@@ -24,7 +24,7 @@ public class App {
         System.out.println(boardCount + "번 게시글이 등록되었습니다.");
     }
 
-    void boardShow () {
+    void boardShow() {
         if (boardCount == 0) {
             System.out.println("게시물이 존재하지 않습니다.");
         } else {
@@ -38,13 +38,10 @@ public class App {
         }
     }
 
-    void boardDelete () {
+    void boardDelete(int delIndex) {
         if (boardCount == 0) {
             System.out.println("게시물이 존재하지 않습니다.");
         } else {
-            System.out.print("삭제할 게시물 번호를 입력하십시오 : ");
-            int delIndex = sc.nextInt();
-            sc.nextLine();
             for (int i = 0; i < ba.size(); i++) {
                 if (ba.get(i).getNumber() == delIndex) {
                     ba.remove(i);
@@ -58,20 +55,21 @@ public class App {
         }
     }
 
-    void boardModify () {
+    void boardModify(int modIndex) {
         if (boardCount == 0) {
             System.out.println("게시물이 존재하지 않습니다.");
         } else {
-            System.out.print("수정할 게시물 번호를 입력하십시오 : ");
-            int modIndex = sc.nextInt();
-            sc.nextLine();
             for (int i = 0; i < ba.size(); i++) {
                 if (ba.get(i).getNumber() == modIndex) {
+                    System.out.println("제목(기존) : " + ba.get(i).getTitle());
                     System.out.print("제목 : ");
                     ba.get(i).setTitle(sc.nextLine());
+                    System.out.println("내용(기존) : " + ba.get(i).getContent());
                     System.out.print("내용 : ");
                     ba.get(i).setContent(sc.nextLine());
                     System.out.println(modIndex + "번 게시물이 수정되었습니다.");
+                    ba.addLast(ba.get(i));
+                    ba.remove(i);
                     break;
                 } else if (ba.size() - 1 == i) {
                     System.out.println("존재하지 않는 게시물 입니다.");
@@ -92,10 +90,14 @@ public class App {
                     boardInsert();
                 } else if (a.equals("목록")) {
                     boardShow();
-                } else if (a.equals("삭제")) {
-                    boardDelete();
-                } else if (a.equals("수정")) {
-                    boardModify();
+                } else if (a.startsWith("삭제?id=")
+                        && !a.replace("삭제?id=", "").isBlank()) {
+                    boardDelete(Integer.parseInt(a.replace("삭제?id=", "")));
+                } else if (a.startsWith("수정?id=")
+                        && !a.replace("수정?id=", "").isBlank()) {
+                    boardModify(Integer.parseInt(a.replace("수정?id=", "")));
+                } else {
+                    System.out.println("잘못된 명령어 입니다.");
                 }
             } catch (Exception e) {
                 System.out.println(e);
