@@ -25,55 +25,61 @@ public class App {
     }
 
     void boardShow() {
-        if (boardCount == 0) {
-            System.out.println("게시물이 존재하지 않습니다.");
-        } else {
-            System.out.println("번호 / 제목 / 내용");
-            System.out.println("---------------------------");
-            int countIns = boardCount - 1;
-            while (countIns >= 0) {
-                System.out.println(ba.get(countIns).getNumber() + " / " + ba.get(countIns).getTitle() + " / " + ba.get(countIns).getContent());
-                countIns--;
-            }
+        System.out.println("번호 / 제목 / 내용");
+        System.out.println("---------------------------");
+        int countIns = boardCount - 1;
+        while (countIns >= 0) {
+            System.out.println(ba.get(countIns).getNumber() + " / " + ba.get(countIns).getTitle() + " / " + ba.get(countIns).getContent());
+            countIns--;
         }
     }
 
-    void boardDelete(int delIndex) {
-        if (boardCount == 0) {
-            System.out.println("게시물이 존재하지 않습니다.");
-        } else {
-            for (int i = 0; i < ba.size(); i++) {
-                if (ba.get(i).getNumber() == delIndex) {
-                    ba.remove(i);
-                    System.out.println(delIndex + "번 게시물이 삭제되었습니다.");
-                    boardCount--;
-                    break;
-                } else if (ba.size() - 1 == i) {
-                    System.out.println("존재하지 않는 게시물 입니다.");
-                }
+    int findIndex(int index) {
+        for (int i = 0; i < ba.size(); i++) {
+            if (ba.get(i).getNumber() == index) {
+                return i;
             }
+        }
+        System.out.println("존재하지 않는 게시물 입니다.");
+        return -1;
+    }
+
+    void boardDelete(int delIndex) {
+        int foundIndex = findIndex(delIndex);
+        if (foundIndex > -1) {
+            ba.remove(foundIndex);
+            System.out.println(delIndex + "번 게시물이 삭제되었습니다.");
+            boardCount--;
         }
     }
 
     void boardModify(int modIndex) {
+        int foundIndex = findIndex(modIndex);
+        if (foundIndex > -1) {
+            System.out.println("제목(기존) : " + ba.get(foundIndex).getTitle());
+            System.out.print("제목 : ");
+            ba.get(foundIndex).setTitle(sc.nextLine());
+
+            System.out.println("내용(기존) : " + ba.get(foundIndex).getContent());
+            System.out.print("내용 : ");
+            ba.get(foundIndex).setContent(sc.nextLine());
+
+            System.out.println(modIndex + "번 게시물이 수정되었습니다.");
+            ba.addLast(ba.get(foundIndex));
+            ba.remove(foundIndex);
+        }
+    }
+
+    void BaNotEmpty(String s) {
         if (boardCount == 0) {
             System.out.println("게시물이 존재하지 않습니다.");
         } else {
-            for (int i = 0; i < ba.size(); i++) {
-                if (ba.get(i).getNumber() == modIndex) {
-                    System.out.println("제목(기존) : " + ba.get(i).getTitle());
-                    System.out.print("제목 : ");
-                    ba.get(i).setTitle(sc.nextLine());
-                    System.out.println("내용(기존) : " + ba.get(i).getContent());
-                    System.out.print("내용 : ");
-                    ba.get(i).setContent(sc.nextLine());
-                    System.out.println(modIndex + "번 게시물이 수정되었습니다.");
-                    ba.addLast(ba.get(i));
-                    ba.remove(i);
-                    break;
-                } else if (ba.size() - 1 == i) {
-                    System.out.println("존재하지 않는 게시물 입니다.");
-                }
+            if (s.equals("목록")) {
+                boardShow();
+            } else if (s.contains("삭제")) {
+                boardDelete(Integer.parseInt(s.replace("삭제?id=", "")));
+            } else if (s.contains("수정")) {
+                boardModify(Integer.parseInt(s.replace("수정?id=", "")));
             }
         }
     }
@@ -88,14 +94,10 @@ public class App {
                     break;
                 } else if (a.equals("등록")) {
                     boardInsert();
-                } else if (a.equals("목록")) {
-                    boardShow();
-                } else if (a.startsWith("삭제?id=")
-                        && !a.replace("삭제?id=", "").isBlank()) {
-                    boardDelete(Integer.parseInt(a.replace("삭제?id=", "")));
-                } else if (a.startsWith("수정?id=")
-                        && !a.replace("수정?id=", "").isBlank()) {
-                    boardModify(Integer.parseInt(a.replace("수정?id=", "")));
+                } else if (a.equals("목록")
+                        || (a.startsWith("삭제?id=") && !a.replace("삭제?id=", "").isBlank())
+                        || (a.startsWith("수정?id=") && !a.replace("수정?id=", "").isBlank())) {
+                    BaNotEmpty(a);
                 } else {
                     System.out.println("잘못된 명령어 입니다.");
                 }
