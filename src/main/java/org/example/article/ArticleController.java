@@ -34,67 +34,43 @@ public class ArticleController {
         }
     }
 
-    void boardDelete(int delIndex) {
-        int foundIndex = findIndex(delIndex);
-        if (foundIndex > -1) {
-            ba.remove(foundIndex);
-            System.out.println(delIndex + "번 게시물이 삭제되었습니다.");
-            boardCount--;
-        }
+    void boardDelete(int delInIndex, int delArrIndex) {
+        ba.remove(delArrIndex);
+        System.out.println(delInIndex + "번 게시물이 삭제되었습니다.");
+        boardCount--;
     }
 
-    void boardModify(int modIndex) {
-        int foundIndex = findIndex(modIndex);
-        if (foundIndex > -1) {
-            System.out.println("제목(기존) : " + ba.get(foundIndex).getTitle());
-            System.out.print("제목 : ");
-            ba.get(foundIndex).setTitle(Container.getSc().nextLine());
+    void boardModify(int modInIndex, int modArrIndex) {
+        System.out.println("제목(기존) : " + ba.get(modArrIndex).getTitle());
+        System.out.print("제목 : ");
+        ba.get(modArrIndex).setTitle(Container.getSc().nextLine());
 
-            System.out.println("내용(기존) : " + ba.get(foundIndex).getContent());
-            System.out.print("내용 : ");
-            ba.get(foundIndex).setContent(Container.getSc().nextLine());
+        System.out.println("내용(기존) : " + ba.get(modArrIndex).getContent());
+        System.out.print("내용 : ");
+        ba.get(modArrIndex).setContent(Container.getSc().nextLine());
 
-            System.out.println(modIndex + "번 게시물이 수정되었습니다.");
-            ba.addLast(ba.get(foundIndex));
-            ba.remove(foundIndex);
-        }
+        System.out.println(modInIndex + "번 게시물이 수정되었습니다.");
+        ba.addLast(ba.get(modArrIndex));
+        ba.remove(modArrIndex);
     }
 
-    public int findCorrectIndex(int a) {
-        if (boardCount == 0) {
-            System.out.println("게시물이 존재하지 않습니다.");
-            return -1;
-        } else {
-            for (int i = 0; i < ba.size(); i++) {
-                if (ba.get(i).getNumber() == a) {
-                    return i;
-                }
-            }
-            System.out.println("존재하지 않는 게시물 번호입니다");
-        }
-        return -1;
-    }
-
-    int findIndex(int index) {
-        for (int i = 0; i < ba.size(); i++) {
-            if (ba.get(i).getNumber() == index) {
-                return i;
-            }
-        }
-        System.out.println("존재하지 않는 게시물 입니다.");
-        return -1;
-    }
 
     public void BaNotEmpty(String s, int idx) {
         if (boardCount == 0) {
             System.out.println("게시물이 존재하지 않습니다.");
+        } else if (s.equals("목록")) {
+            boardShow();
         } else {
-            if (s.equals("목록")) {
-                boardShow();
-            } else if (s.equals("삭제")) {
-                boardDelete(idx);
-            } else if (s.equals("수정")) {
-                boardModify(idx);
+            for (int i = 0; i < ba.size(); i++) {
+                if (ba.get(i).getNumber() == idx) {
+                    if (s.equals("삭제")) {
+                        boardDelete(idx, i);
+                    } else if (s.equals("수정")) {
+                        boardModify(idx, i);
+                    }
+                } else if (i == ba.size() - 1) {
+                    System.out.println("존재하지 않는 게시물 번호입니다");
+                }
             }
         }
     }

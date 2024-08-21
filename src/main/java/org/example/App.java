@@ -30,8 +30,8 @@ public class App {
                 } else if (r.getCommand().equals("등록")) {
                     articleController.boardInsert();
                 } else if (r.getCommand().equals("목록")
-                        || r.getCommand().equals("삭제") && r.getIdx() != -1
-                        || r.getCommand().equals("수정") && r.getIdx() != -1) {
+                        || r.getCommand().equals("삭제")
+                        || r.getCommand().equals("수정")) {
                     articleController.BaNotEmpty(r.getCommand(), r.getIdx());
                 }
             } catch (Exception e) {
