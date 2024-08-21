@@ -8,7 +8,7 @@ public class ArticleController {
     static ArrayList<Board> ba;
     static int boardCount;
 
-    public ArticleController () {
+    public ArticleController() {
         boardCount = 0;
         ba = new ArrayList<>();
     }
@@ -60,6 +60,21 @@ public class ArticleController {
         }
     }
 
+    public int findCorrectIndex(int a) {
+        if (boardCount == 0) {
+            System.out.println("게시물이 존재하지 않습니다.");
+            return -1;
+        } else {
+            for (int i = 0; i < ba.size(); i++) {
+                if (ba.get(i).getNumber() == a) {
+                    return i;
+                }
+            }
+            System.out.println("존재하지 않는 게시물 번호입니다");
+        }
+        return -1;
+    }
+
     int findIndex(int index) {
         for (int i = 0; i < ba.size(); i++) {
             if (ba.get(i).getNumber() == index) {
@@ -70,16 +85,16 @@ public class ArticleController {
         return -1;
     }
 
-    public void BaNotEmpty(String s) {
+    public void BaNotEmpty(String s, int idx) {
         if (boardCount == 0) {
             System.out.println("게시물이 존재하지 않습니다.");
         } else {
             if (s.equals("목록")) {
                 boardShow();
-            } else if (s.contains("삭제")) {
-                boardDelete(Integer.parseInt(s.replace("삭제?id=", "")));
-            } else if (s.contains("수정")) {
-                boardModify(Integer.parseInt(s.replace("수정?id=", "")));
+            } else if (s.equals("삭제")) {
+                boardDelete(idx);
+            } else if (s.equals("수정")) {
+                boardModify(idx);
             }
         }
     }

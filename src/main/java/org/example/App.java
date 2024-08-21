@@ -32,7 +32,7 @@ public class App {
                 } else if (r.getCommand().equals("목록")
                         || r.getCommand().equals("삭제") && r.getIdx() != -1
                         || r.getCommand().equals("수정") && r.getIdx() != -1) {
-                    articleController.BaNotEmpty(a);
+                    articleController.BaNotEmpty(r.getCommand(), r.getIdx());
                 }
             } catch (Exception e) {
                 System.out.println(e);
